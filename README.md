@@ -9,4 +9,4 @@ ESP32 point-to-point LoRa lab implementation adjusted for **Ai-Thinker Ra-02 (SX
 - **Part C — Distance & Spreading Factor (`PART_C_TX/`, `PART_C_RX/`)**: Evaluates maximum reliable range and signal strength between **SF7** and **SF12** under NLOS (PDA Room to 2F OZ Hallway: `~31.70 m` vs. `~37.49 m`) and LOS (CT Entrance road: `~50.59 m` vs. `~80.61 m`).
 - **Part D — Airtime & Duty-Cycle Compliance *(Analysis Only)***: Derives packet airtime and minimum 1% duty-cycle reporting intervals for the 9-byte payload (`41.22 ms` / `4.12 s` at SF7 vs. `991.23 ms` / `99.12 s` at SF12) and selects the optimal SF for a 2 km node reporting 4 times/hour (`900 s`).
 
-*(Parts E–F LoRaWAN OTAA / network server decoding were not included per instructor scope. `IoT-Lab-9-Schematic/` contains the KiCad schematic project files.)*
+*(`IoT-Lab-9-Schematic/` contains the KiCad schematic project files.)*
