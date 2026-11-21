@@ -1,0 +1,6 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "Ra-02_SX1278") (type "KiCad") (uri "${KIPRJMOD}/Ra-02_SX1278.kicad_sym") (options "") (descr ""))
+	(lib (name "Adafruit_BMP280_BME280") (type "KiCad") (uri "${KIPRJMOD}/Adafruit_BMP280_BME280.kicad_sym") (options "") (descr ""))
+	(lib (name "GY-302_BH1750") (type "KiCad") (uri "${KIPRJMOD}/GY-302_BH1750.kicad_sym") (options "") (descr ""))
+)
