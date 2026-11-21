@@ -2,6 +2,9 @@
 
 ESP32 point-to-point LoRa lab implementation adjusted for **Ai-Thinker Ra-02 (SX1278, 433.2 MHz)**, **BME280** (temperature, humidity, pressure), **BH1750** (ambient light in lux), and a **16x2 I2C LCD** receiver display.
 
+## Schematic Diagram
+![Lab-9-Schematic-Diagram](./IoT-Lab-9-Schematic/IoT-Lab-9-Schematic.png)
+
 ## Parts Overview (Parts A–D)
 
 - **Part A — Establish the Link (`PART_A_TX/`, `PART_A_RX/`)**: Verifies SPI initialization and basic point-to-point LoRa communication (`433.2 MHz`, `SF7`, `BW 125 kHz`, `CR 4/5`, `Sync 0x34`, `14 dBm`) with simple ping packets and bench RSSI/SNR checks.
