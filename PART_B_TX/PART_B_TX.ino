@@ -1,15 +1,4 @@
-// === PART B: NODE 1 (TRANSMITTER) — 9-BYTE PACKED TELEMETRY (BME280 + BH1750) ===
-// Hardware adjustments:
-//   - Ai-Thinker Ra-02 (SX1278) at 433 MHz band
-//   - BME280 (Temp, Humidity, Pressure) over I2C (0x76 or 0x77)
-//   - BH1750 (Ambient Light in Lux) over I2C (0x23 or 0x5C)
-//
-// Required Arduino Libraries (Library Manager):
-//   - LoRa (by Sandeep Mistry)
-//   - Adafruit BME280 Library (+ Adafruit Unified Sensor)
-//   - BH1750 (by Christopher Laws)
-//
-// CRITICAL RF SAFETY: Attach the 433 MHz antenna to the Ra-02 BEFORE powering on!
+// Part B: TX (BME280 + BH1750)
 
 #include <SPI.h>
 #include <LoRa.h>
@@ -19,17 +8,16 @@
 #include <BH1750.h>
 #include <math.h>
 
-// ESP32-DevKitC (VSPI: SCK=18, MISO=19, MOSI=23) <-> Ra-02 (SX1278)
 #define SS_PIN    5
 #define RST_PIN   14
-#define DIO0_PIN  2     // Switch to 26 if GPIO 2 interferes with upload
+#define DIO0_PIN  2
 
-// --- Matched Radio Parameters (MUST match PART_B_RX.ino!) ---
-#define LORA_FREQ   433.2E6   // Change BOTH nodes to your group's channel (e.g., 433.4E6)
-#define LORA_SYNC   0x34    // Change BOTH nodes to 0x12 (private) or keep 0x34
-#define CURRENT_SF  7       // 7 for Part B; change to 12 in Part C
+// Radio config (match RX)
+#define LORA_FREQ   433.2E6
+#define LORA_SYNC   0x34
+#define CURRENT_SF  7
 
-// --- Sensor Objects (I2C: SDA=GPIO 21, SCL=GPIO 22) ---
+// I2C sensors (SDA=21, SCL=22)
 Adafruit_BME280 bme;
 BH1750 lightMeter;
 
@@ -41,17 +29,12 @@ struct EnvRecord {
   float humPct;
   float presHpa;
   float lux;
-  uint8_t flags; // bit 0 (0x01) = BME280 OK, bit 1 (0x02) = BH1750 OK
+  uint8_t flags; // bit0=BME280, bit1=BH1750
 };
 
 const int PAYLOAD_LEN = 9;
 
-// 9-byte big-endian packed layout:
-//   [0..1] tempC        (int16_t,  value * 100)
-//   [2..3] humPct       (uint16_t, value * 100)
-//   [4..5] presHpa      (uint16_t, (value - 800) * 10)
-//   [6..7] lux          (uint16_t, value / 10)
-//   [8]    flags        (uint8_t,  status/alarm bitmask)
+// [0..1] tempC*100, [2..3] hum*100, [4..5] (pres-800)*10, [6..7] lux/10, [8] flags
 void pack(const EnvRecord& r, uint8_t* b) {
   float tClamped = constrain(r.tempC, -327.68f, 327.67f);
   float hClamped = constrain(r.humPct, 0.0f, 655.35f);
@@ -113,7 +96,7 @@ EnvRecord readSensors() {
       r.tempC   = t;
       r.humPct  = h;
       r.presHpa = p;
-      r.flags  |= 0x01; // Bit 0: BME280 valid
+      r.flags  |= 0x01;
     }
   }
 
@@ -121,7 +104,7 @@ EnvRecord readSensors() {
     float lx = lightMeter.readLightLevel();
     if (!isnan(lx) && lx >= 0.0f) {
       r.lux    = lx;
-      r.flags |= 0x02; // Bit 1: BH1750 valid
+      r.flags |= 0x02;
     }
   }
 

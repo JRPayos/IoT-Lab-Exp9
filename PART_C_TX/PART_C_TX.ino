@@ -1,10 +1,4 @@
-// === PART C: NODE 1 (TRANSMITTER) — DISTANCE & SPREADING FACTOR TEST (SF7 vs. SF12) ===
-// Hardware: ESP32 + Ra-02 (SX1278, 433.2 MHz) + BME280 + BH1750
-// CRITICAL RF SAFETY: Attach the 433 MHz antenna to the Ra-02 BEFORE powering on!
-//
-// Part C Procedure:
-//   1. Run distance test with CURRENT_SF = 7 on BOTH TX and RX.
-//   2. Change CURRENT_SF to 12 on BOTH TX and RX, re-flash both, and repeat.
+// Part C: TX (SF7 vs SF12)
 
 #include <SPI.h>
 #include <LoRa.h>
@@ -18,10 +12,10 @@
 #define RST_PIN   14
 #define DIO0_PIN  2
 
-// --- Matched Radio Parameters (MUST match PART_C_RX.ino!) ---
+// Radio config (match RX)
 #define LORA_FREQ       433.2E6
 #define LORA_SYNC       0x34
-#define CURRENT_SF      7       // Pass 1: 7 | Pass 2: 12 (MUST match RX!)
+#define CURRENT_SF      7       // 7 or 12
 #define TX_INTERVAL_MS  3000
 
 Adafruit_BME280 bme;
